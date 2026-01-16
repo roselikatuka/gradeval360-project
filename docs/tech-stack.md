@@ -44,9 +44,7 @@
 
 \## Notes
 
-This repository provides a baseline starter project
 
-to onboard developers consistently.
 
 
 
