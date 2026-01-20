@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AppointmentStatus {
+  DRAFT
+  SUBMITTED
+  ACKNOWLEDGED
+}
+
+model Appointment {
+  id             String            @id
+  gaUserId       String
+  mentorUserId   String
+  status         AppointmentStatus @default(DRAFT)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  expectation    ExpectationSetting?
+}
+
+model ExpectationSetting {
+  id              String   @id @default(uuid())
+  appointmentId   String   @unique
+  meetingDate     String
+  goals           Json
+  expectations    String
+  submittedAt     DateTime @default(now())
+  acknowledgedAt  DateTime?
+
+  appointment     Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+}
